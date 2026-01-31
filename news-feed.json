@@ -12,7 +12,7 @@
     "imagen": "https://estelarlatam.github.io/noticia/imagenes/guia-avatar.jpg",
     "descripcion": "Aprende a personalizar tu perfil, explorar funciones, unirte a espacios interactivos y aprovechar al máximo nuestra plataforma desde el primer día.",
     "link": "https://estelarlatam.github.io/noticia/noticias/guia-avatar.md"
-  }
+  },
 {
   "titulo": "📣 ¡Estamos buscando nuevos miembros del staff!",
   "fecha": "2026-01-29T09:00:00",
@@ -33,5 +33,5 @@
     "imagen": "https://estelarlatam.github.io/noticia/imagenes/banner-de-presentacion.jpg",
     "descripcion": "Aquí encontrarás todas las novedades, eventos, actualizaciones, campañas especiales y noticias semanales de nuestra plataforma. 🔔 ¡No olvides visitarnos cada semana para enterarte de lo último!",
     "link": "https://estelarlatam.github.io/website/"
-  }, 
+  }
 ]
