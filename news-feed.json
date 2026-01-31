@@ -1,16 +1,16 @@
 [
   {
-    "id": "njqjtfsm1aaq",
-    "titulo": "¡Nuevo video en TikTok!",
-    "imagen": "https://link-a-imagen.com/video-tiktok.jpg",
-    "fecha": "2026-01-31",
-    "link": "https://reality.app/notice/page/njqjtfsm1aaq"
+    "titulo": "[Important] Please link your account with an SNS other than X",
+    "fecha": "2026-01-26T03:00:00",
+    "imagen": "https://estelarlatam.github.io/noticia/imagenes/social-media-link.jpg",
+    "descripcion": "Open the setting menu and then tap 'Account'. Select what social media you want to link your account to.",
+    "link": "https://estelarlatam.github.io/noticia/noticias/link-account.md"
   },
   {
-    "id": "9d09u52j3ma1",
-    "titulo": "Nuevo Gacha Teaser",
-    "imagen": "https://link-a-imagen.com/gacha.jpg",
-    "fecha": "2026-01-30",
-    "link": "https://reality.app/notice/page/9d09u52j3ma1"
+    "titulo": "[Furniture Gacha] Up to 70% OFF! Shiba-Inu Playroom Gacha",
+    "fecha": "2026-01-25T13:00:00",
+    "imagen": "https://estelarlatam.github.io/noticia/imagenes/shiba-gacha.jpg",
+    "descripcion": "New limited time furniture gacha featuring adorable Shiba Inu themed items for your room.",
+    "link": "https://estelarlatam.github.io/noticia/noticias/shiba-gacha.md"
   }
 ]
