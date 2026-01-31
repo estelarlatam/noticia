@@ -7,9 +7,16 @@
     "link": "https://estelarlatam.github.io/noticia/noticias/link-account.md"
   },
   {
+    "titulo": "[Important] Please link your account with an SNS other than X",
+    "fecha": "2026-01-26T03:00:00",
+    "imagen": "https://estelarlatam.github.io/noticia/imagenes/social-media-link.jpg",
+    "descripcion": "Open the setting menu and then tap 'Account'. Select what social media you want to link your account to.",
+    "link": "https://estelarlatam.github.io/noticia/noticias/link-account.md"
+  },  
+  {
     "titulo": "🎉 ¡Bienvenid@ al Centro de Noticias Oficial de VTuber Reality!",
     "fecha": "2026-01-25T13:00:00",
-    "imagen": "https://estelarlatam.github.io/noticia/imagenes/shiba-gacha.jpg",
+    "imagen": "https://estelarlatam.github.io/noticia/imagenes/banner-de-presentacion.jpg",
     "descripcion": "Aquí encontrarás todas las novedades, eventos, actualizaciones, campañas especiales y noticias semanales de tu app favorita de VTubers. 🔔 ¡No olvides visitarnos cada semana para enterarte de lo último!",
     "link": "https://estelarlatam.github.io/noticia/noticias/shiba-gacha.md"
   }
