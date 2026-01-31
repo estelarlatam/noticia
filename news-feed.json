@@ -1,26 +1,5 @@
 [
   {
-    "titulo": "🎉 ¡Bienvenid@ a nuestro Centro de Noticias!",
-    "fecha": "2026-01-25T13:00:00",
-    "imagen": "https://estelarlatam.github.io/noticia/imagenes/banner-de-presentacion.jpg",
-    "descripcion": "Aquí encontrarás todas las novedades, eventos, actualizaciones, campañas especiales y noticias semanales de nuestra plataforma. 🔔 ¡No olvides visitarnos cada semana para enterarte de lo último!",
-    "link": "https://estelarlatam.github.io/website/"
-  },
-  {
-    "titulo": "📜 Reglas Oficiales de la Comunidad",
-    "fecha": "2026-01-26T03:00:00",
-    "imagen": "https://estelarlatam.github.io/noticia/imagenes/Conoce%20las%20reglas%20oficiales%20de%20Estelar%20Latam.png",
-    "descripcion": "Para mantener la armonía y el respeto entre tod@s, te presentamos nuestras normas oficiales. 💫 ¡Por favor, léelas con atención antes de participar en eventos, chats o transmisiones!",
-    "link": "https://estelarlatam.github.io/noticia/noticias/reglas-comunidad.md"
-  },
-{
-  "titulo": "📣 ¡Estamos buscando nuevos miembros del staff!",
-  "fecha": "2026-01-29T09:00:00",
-  "imagen": "https://estelarlatam.github.io/noticia/imagenes/Oportunidad%20para%20%20Postularse%20como%20%20Miembro%20del%20Personal.png",
-  "descripcion": "¿Te gustaría colaborar con la comunidad y ayudar a que crezca este espacio? Estamos en búsqueda de moderadores, creativos, y personas con ganas de aportar.",
-  "link": "https://estelarlatam.github.io/noticia/noticias/convocatoria-staff.md"
-},
-  {
     "titulo": "🎁 Campaña de lanzamiento: ¡Gana premios exclusivos!",
     "fecha": "2026-01-28T10:00:00",
     "imagen": "https://estelarlatam.github.io/noticia/imagenes/evento-lanzamiento.jpg",
@@ -34,4 +13,25 @@
     "descripcion": "Aprende a personalizar tu perfil, explorar funciones, unirte a espacios interactivos y aprovechar al máximo nuestra plataforma desde el primer día.",
     "link": "https://estelarlatam.github.io/noticia/noticias/guia-avatar.md"
   }
+{
+  "titulo": "📣 ¡Estamos buscando nuevos miembros del staff!",
+  "fecha": "2026-01-29T09:00:00",
+  "imagen": "https://estelarlatam.github.io/noticia/imagenes/Oportunidad%20para%20%20Postularse%20como%20%20Miembro%20del%20Personal.png",
+  "descripcion": "¿Te gustaría colaborar con la comunidad y ayudar a que crezca este espacio? Estamos en búsqueda de moderadores, creativos, y personas con ganas de aportar.",
+  "link": "https://estelarlatam.github.io/noticia/noticias/convocatoria-staff.md"
+},
+  {
+    "titulo": "📜 Reglas Oficiales de la Comunidad",
+    "fecha": "2026-01-26T03:00:00",
+    "imagen": "https://estelarlatam.github.io/noticia/imagenes/Conoce%20las%20reglas%20oficiales%20de%20Estelar%20Latam.png",
+    "descripcion": "Para mantener la armonía y el respeto entre tod@s, te presentamos nuestras normas oficiales. 💫 ¡Por favor, léelas con atención antes de participar en eventos, chats o transmisiones!",
+    "link": "https://estelarlatam.github.io/noticia/noticias/reglas-comunidad.md"
+  },
+  {
+    "titulo": "🎉 ¡Bienvenid@ a nuestro Centro de Noticias!",
+    "fecha": "2026-01-25T13:00:00",
+    "imagen": "https://estelarlatam.github.io/noticia/imagenes/banner-de-presentacion.jpg",
+    "descripcion": "Aquí encontrarás todas las novedades, eventos, actualizaciones, campañas especiales y noticias semanales de nuestra plataforma. 🔔 ¡No olvides visitarnos cada semana para enterarte de lo último!",
+    "link": "https://estelarlatam.github.io/website/"
+  }, 
 ]
