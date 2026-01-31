@@ -1,27 +1,553 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Noticias VTuber</title>
-  <style>
-    body { font-family: Arial; padding: 20px; max-width: 800px; margin: auto; }
-    .noticia { border-bottom: 1px solid #ccc; padding: 10px 0; }
-    .noticia img { max-width: 100%; height: auto; }
-    .noticia a { color: #3366cc; text-decoration: none; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Noticias y actualizaciones - Estelar LATAM">
+    <meta name="theme-color" content="#6366f1">
+    
+    <title>Noticias | Estelar LATAM</title>
+    
+    <!-- Preconnect para optimizar carga -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0f172a;
+                --card-bg: #1e293b;
+                --text-primary: #f1f5f9;
+                --text-secondary: #94a3b8;
+                --border-color: #334155;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+        }
+
+        h1 {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .subtitle {
+            opacity: 0.9;
+            font-size: 1rem;
+            position: relative;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .last-updated {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Grid de noticias */
+        .news-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        /* Tarjeta de noticia */
+        article {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid var(--border-color);
+        }
+
+        article:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .news-content {
+            padding: 1.5rem;
+        }
+
+        .news-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .news-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        .news-date {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .news-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Acciones */
+        .news-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-color);
+            color: var(--text-primary);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Estados de carga y error */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #ef4444;
+        }
+
+        .error-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--text-primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            font-weight: 500;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .news-content {
+                padding: 1.25rem;
+            }
+            
+            .news-header {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .news-date {
+                font-size: 0.8125rem;
+            }
+            
+            .btn {
+                flex: 1 1 calc(50% - 0.375rem);
+            }
+        }
+
+        /* Iconos (SVG inline) */
+        .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            flex-shrink: 0;
+        }
+    </style>
 </head>
 <body>
-  <h1>📰 Noticias Semanales - App VTuber</h1>
 
-  <div class="noticia">
-    <h2>[TikTok] ¡La canción definitiva del caballo!</h2>
-    <p><strong>Fecha:</strong> 31 de enero de 2026 - 7:30 a. m.</p>
-    <img src="https://content-cf.lab.reality.app/571bcac218cb09f17550bf87549e139ad90035f5.jpg?t=1742867386" alt="TikTok video">
-    <p>¡Ya está disponible nuestro nuevo video en la cuenta oficial de TikTok!</p>
-    <a href="https://reality.app/notice/page/njqjtfsm1aaq" target="_blank">🔗 Ver más</a> |
-    <a href="#" onclick="navigator.share({title:'La canción del caballo', url:'https://reality.app/notice/page/njqjtfsm1aaq'}); return false;">🔗 Compartir</a>
-  </div>
+    <header>
+        <h1>📰 Centro de Noticias</h1>
+        <p class="subtitle">Actualizaciones y comunicados oficiales</p>
+    </header>
 
-  <!-- Aquí podrías insertar más bloques similares de noticias -->
+    <main class="container">
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Cargando noticias...</p>
+        </div>
+
+        <div id="error" class="error" style="display: none;">
+            <div class="error-icon">⚠️</div>
+            <h2>No se pudieron cargar las noticias</h2>
+            <p id="error-message">Error de conexión</p>
+        </div>
+
+        <div id="content" style="display: none;">
+            <p class="last-updated">Última actualización: <time id="last-updated">-</time></p>
+            <section class="news-grid" id="news-container">
+                <!-- Las noticias se insertarán aquí dinámicamente -->
+            </section>
+        </div>
+    </main>
+
+    <div id="toast" class="toast">Enlace copiado al portapapeles</div>
+
+    <script>
+        // Configuración
+        const CONFIG = {
+            jsonUrl: 'news-feed.json', // Ajusta la ruta si es necesario
+            defaultImage: 'https://via.placeholder.com/800x400/6366f1/ffffff?text=Noticia'
+        };
+
+        // Iconos SVG
+        const ICONS = {
+            calendar: `<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>`,
+            arrow: `<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>`,
+            share: `<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>`,
+            check: `<svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`
+        };
+
+        // Formatear fecha
+        function formatDate(dateString) {
+            if (!dateString) return 'Fecha no disponible';
+            
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) return dateString;
+                
+                return new Intl.DateTimeFormat('es-ES', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }).format(date);
+            } catch (e) {
+                return dateString;
+            }
+        }
+
+        // Mostrar toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Compartir noticia
+        async function shareNews(news) {
+            const shareData = {
+                title: news.titulo,
+                text: news.descripcion || news.titulo,
+                url: news.link
+            };
+
+            // Usar Web Share API si está disponible
+            if (navigator.share) {
+                try {
+                    await navigator.share(shareData);
+                    return;
+                } catch (err) {
+                    // Si el usuario cancela, no hacemos nada
+                    if (err.name === 'AbortError') return;
+                }
+            }
+
+            // Fallback: Copiar al portapapeles
+            try {
+                await navigator.clipboard.writeText(`${shareData.title}\n\n${shareData.url}`);
+                showToast('📋 Enlace copiado al portapapeles');
+            } catch (err) {
+                // Fallback final: seleccionar texto manualmente
+                const textArea = document.createElement('textarea');
+                textArea.value = shareData.url;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast('📋 Enlace copiado!');
+            }
+        }
+
+        // Crear HTML de una noticia
+        function createNewsCard(news, index) {
+            const article = document.createElement('article');
+            article.style.animationDelay = `${index * 0.1}s`;
+            article.style.animation = 'fadeIn 0.5s ease-out forwards';
+            
+            const date = formatDate(news.fecha);
+            const image = news.imagen || CONFIG.defaultImage;
+            const description = news.descripcion || 'Haz clic en "Leer más" para ver los detalles completos de esta noticia.';
+            
+            article.innerHTML = `
+                <img src="${image}" 
+                     alt="${news.titulo}" 
+                     class="news-image"
+                     loading="${index === 0 ? 'eager' : 'lazy'}"
+                     onerror="this.src='${CONFIG.defaultImage}'">
+                
+                <div class="news-content">
+                    <div class="news-header">
+                        <h2 class="news-title">${news.titulo}</h2>
+                        <time class="news-date" datetime="${news.fecha}">
+                            ${ICONS.calendar}
+                            ${date}
+                        </time>
+                    </div>
+                    
+                    <p class="news-description">${description}</p>
+                    
+                    <div class="news-actions">
+                        <a href="${news.link}" 
+                           target="_blank" 
+                           rel="noopener noreferrer" 
+                           class="btn btn-primary">
+                            ${ICONS.arrow}
+                            Leer más
+                        </a>
+                        
+                        <button class="btn btn-secondary" onclick="shareNews(${JSON.stringify(news).replace(/"/g, '&quot;')})">
+                            ${ICONS.share}
+                            Compartir
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return article;
+        }
+
+        // Cargar noticias
+        async function loadNews() {
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const contentEl = document.getElementById('content');
+            const container = document.getElementById('news-container');
+            const lastUpdatedEl = document.getElementById('last-updated');
+
+            try {
+                // Agregar timestamp para evitar cache en GitHub Pages
+                const response = await fetch(`${CONFIG.jsonUrl}?t=${Date.now()}`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+
+                const news = await response.json();
+
+                if (!Array.isArray(news) || news.length === 0) {
+                    throw new Error('No hay noticias disponibles');
+                }
+
+                // Limpiar contenedor
+                container.innerHTML = '';
+                
+                // Renderizar noticias
+                news.forEach((item, index) => {
+                    const card = createNewsCard(item, index);
+                    container.appendChild(card);
+                });
+
+                // Actualizar fecha de última actualización
+                const now = new Date();
+                lastUpdatedEl.textContent = now.toLocaleString('es-ES', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                lastUpdatedEl.setAttribute('datetime', now.toISOString());
+
+                // Mostrar contenido
+                loadingEl.style.display = 'none';
+                contentEl.style.display = 'block';
+
+            } catch (error) {
+                console.error('Error cargando noticias:', error);
+                loadingEl.style.display = 'none';
+                errorEl.style.display = 'block';
+                document.getElementById('error-message').textContent = 
+                    error.message || 'No se pudo cargar el archivo de noticias. Verifica que news-feed.json existe en la raíz del repositorio.';
+            }
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', loadNews);
+
+        // Recargar cada 5 minutos (si la página está abierta)
+        setInterval(loadNews, 300000);
+
+        // Exponer función de compartir globalmente
+        window.shareNews = shareNews;
+    </script>
+
+    <style>
+        /* Animación adicional para entrada de tarjetas */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </body>
 </html>
