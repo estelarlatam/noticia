@@ -1,21 +1,7 @@
 [
-  {
-    "titulo": "🎁 Campaña de lanzamiento: ¡Gana premios exclusivos!",
-    "fecha": "2026-01-28T10:00:00",
-    "imagen": "https://estelarlatam.github.io/noticia/imagenes/evento-lanzamiento.jpg",
-    "descripcion": "Participa en nuestra campaña de bienvenida para obtener ítems limitados y recompensas especiales. ¡Activa tu cuenta y empieza a explorar todo lo que tenemos preparado!",
-    "link": "https://estelarlatam.github.io/noticia/noticias/evento-lanzamiento.md"
-  },
-  {
-    "titulo": "💡 Guía rápida: Cómo usar tu perfil y herramientas",
-    "fecha": "2026-01-27T12:00:00",
-    "imagen": "https://estelarlatam.github.io/noticia/imagenes/guia-avatar.jpg",
-    "descripcion": "Aprende a personalizar tu perfil, explorar funciones, unirte a espacios interactivos y aprovechar al máximo nuestra plataforma desde el primer día.",
-    "link": "https://estelarlatam.github.io/noticia/noticias/guia-avatar.md"
-  },
 {
   "titulo": "📣 ¡Estamos buscando nuevos miembros del staff!",
-  "fecha": "2026-01-29T09:00:00",
+  "fecha": "2026-02-08T14:00:00",
   "imagen": "https://estelarlatam.github.io/noticia/imagenes/Oportunidad%20para%20%20Postularse%20como%20%20Miembro%20del%20Personal.png",
   "descripcion": "¿Te gustaría colaborar con la comunidad y ayudar a que crezca este espacio? Estamos en búsqueda de moderadores, creativos, y personas con ganas de aportar.",
   "link": "https://estelarlatam.github.io/noticia/pagina/convocatoria-staff/"
