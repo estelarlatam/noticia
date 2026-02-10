@@ -26,6 +26,15 @@
     "tipo": "noticia",
     "etiqueta": "Importante"
   },
+{
+  "titulo": "🚀 Nueva versión del sitio web",
+  "fecha": "2026-02-10T10:00:00",
+  "imagen": "https://ejemplo.com/update.jpg",
+  "descripcion": "Hemos renovado completamente el diseño...",
+  "link": "https://estelarlatam.github.io/",
+  "tipo": "actualizacion",
+  "etiqueta": "Update v2.0"
+};  
   {
     "titulo": "🎉 ¡Bienvenid@ a nuestro Centro de Noticias!",
     "fecha": "2026-01-25T13:00:00",
