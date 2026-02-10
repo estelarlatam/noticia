@@ -1,0 +1,38 @@
+[
+  {
+    "titulo": "📣 ¡Estamos buscando nuevos miembros del staff!",
+    "fecha": "2026-01-28T14:00:00",
+    "imagen": "https://raw.githubusercontent.com/estelarlatam/noticia/refs/heads/main/imagenes/Oportunidad%20para%20%20Postularse%20como%20%20Miembro%20del%20Personal.png",
+    "descripcion": "¿Te gustaría colaborar con la comunidad y ayudar a que crezca este espacio? Estamos en búsqueda de moderadores, creativos y personas con ganas de aportar.",
+    "link": "https://estelarlatam.github.io/noticia/pagina/convocatoria-staff/",
+    "tipo": "noticia",
+    "etiqueta": "Convocatoria"
+  },
+{
+  "titulo": "🎵 Nuevo video en TikTok",
+  "fecha": "2026-02-11T15:30:00",
+  "imagen": "https://ejemplo.com/tiktok.jpg",
+  "descripcion": "Mira nuestro último trend...",
+  "link": "https://tiktok.com/@estelarlatam",
+  "tipo": "redes",
+  "etiqueta": "TikTok"
+},  
+  {
+    "titulo": "📜 Reglas Oficiales de la Comunidad",
+    "fecha": "2026-01-26T03:00:00",
+    "imagen": "https://estelarlatam.github.io/noticia/imagenes/Conoce%20las%20reglas%20oficiales%20de%20Estelar%20Latam.png",
+    "descripcion": "Para mantener la armonía y el respeto entre tod@s, te presentamos nuestras normas oficiales. 💫 ¡Por favor, léelas con atención antes de participar en eventos, chats o transmisiones!",
+    "link": "https://estelarlatam.github.io/terminos-de-servicio/",
+    "tipo": "noticia",
+    "etiqueta": "Importante"
+  },
+  {
+    "titulo": "🎉 ¡Bienvenid@ a nuestro Centro de Noticias!",
+    "fecha": "2026-01-25T13:00:00",
+    "imagen": "https://estelarlatam.github.io/noticia/imagenes/banner-de-presentacion.jpg",
+    "descripcion": "Aquí encontrarás todas las novedades, eventos, actualizaciones, campañas especiales y noticias semanales de nuestra plataforma. 🔔 ¡No olvides visitarnos cada semana para enterarte de lo último!",
+    "link": "https://estelarlatam.github.io/website/",
+    "tipo": "noticia",
+    "etiqueta": "Anuncio"
+  }
+]
