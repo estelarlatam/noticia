@@ -463,8 +463,8 @@
     </div>
 
     <script>
-        // URL del JSON de noticias
-        const JSON_URL = 'https://github.com/estelarlatam/noticia/blob/main/news-feed.json';
+        // URL CORREGIDA del JSON de noticias (Raw de GitHub)
+        const JSON_URL = 'https://raw.githubusercontent.com/estelarlatam/noticia/main/news-feed.json';
         
         // Variable global para almacenar noticias clasificadas
         let newsData = {
@@ -499,36 +499,49 @@
         function formatDate(dateString) {
             if (!dateString) return 'Fecha no disponible';
             
-            const date = new Date(dateString);
-            const now = new Date();
-            const diffTime = Math.abs(now - date);
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            
-            if (diffDays === 0) {
-                const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
-                if (diffHours === 0) {
-                    const diffMinutes = Math.floor(diffTime / (1000 * 60));
-                    return `Hace ${diffMinutes} minutos`;
+            try {
+                const date = new Date(dateString);
+                const now = new Date();
+                
+                // Verificar si la fecha es válida
+                if (isNaN(date.getTime())) {
+                    return 'Fecha no disponible';
                 }
-                return `Hace ${diffHours} horas`;
-            } else if (diffDays === 1) {
-                return 'Ayer';
-            } else if (diffDays < 7) {
-                return `Hace ${diffDays} días`;
-            } else {
-                return date.toLocaleDateString('es-ES', { 
-                    day: 'numeric', 
-                    month: 'short', 
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
+                
+                const diffTime = now - date;
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+                const diffMinutes = Math.floor(diffTime / (1000 * 60));
+                
+                if (diffMinutes < 1) {
+                    return 'Justo ahora';
+                } else if (diffMinutes < 60) {
+                    return `Hace ${diffMinutes} minutos`;
+                } else if (diffHours < 24) {
+                    return `Hace ${diffHours} horas`;
+                } else if (diffDays === 1) {
+                    return 'Ayer';
+                } else if (diffDays < 7) {
+                    return `Hace ${diffDays} días`;
+                } else {
+                    return date.toLocaleDateString('es-ES', { 
+                        day: 'numeric', 
+                        month: 'short', 
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
+            } catch (e) {
+                console.error('Error formateando fecha:', dateString, e);
+                return 'Fecha no disponible';
             }
         }
 
         // Normalizar ID (crear slug único)
         function normalizeId(title) {
-            return title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]/g, '');
+            if (!title) return 'sin-id-' + Date.now();
+            return title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]/g, '').substring(0, 50);
         }
 
         // Función para cargar noticias desde JSON
@@ -542,6 +555,8 @@
                 // Agregar timestamp para evitar caché
                 const url = `${JSON_URL}?t=${Date.now()}`;
                 
+                console.log('Cargando noticias desde:', url);
+                
                 const response = await fetch(url);
                 
                 if (!response.ok) {
@@ -549,6 +564,8 @@
                 }
                 
                 const items = await response.json();
+                
+                console.log('Datos recibidos:', items);
                 
                 // Validar que sea un array
                 if (!Array.isArray(items)) {
@@ -569,6 +586,12 @@
                 console.error('Error cargando noticias:', error);
                 document.getElementById('loadingState').style.display = 'none';
                 document.getElementById('errorState').style.display = 'block';
+                
+                // Mostrar mensaje de error más específico
+                const errorContainer = document.querySelector('#errorState p');
+                if (errorContainer) {
+                    errorContainer.textContent = `Error: ${error.message}. Verifica que el archivo JSON sea accesible públicamente.`;
+                }
             }
         }
 
@@ -581,11 +604,19 @@
                 social: []
             };
 
-            items.forEach(item => {
+            items.forEach((item, index) => {
+                // Validar que el item tenga los campos mínimos
+                if (!item || typeof item !== 'object') {
+                    console.warn('Item inválido en posición', index, item);
+                    return;
+                }
+                
                 const type = determineNewsType(item);
                 
-                // Agregar ID único
-                item.id = normalizeId(item.titulo || item.title || 'sin-titulo');
+                // Agregar ID único si no tiene
+                if (!item.id) {
+                    item.id = normalizeId(item.titulo) || `news-${index}-${Date.now()}`;
+                }
                 
                 newsData[type].push(item);
             });
@@ -601,22 +632,24 @@
         function createNewsCard(item) {
             const card = document.createElement('a');
             card.className = 'news-card';
-            card.href = item.link || item.url || '#';
+            card.href = item.link || '#';
             card.target = '_blank';
             card.rel = 'noopener noreferrer';
             card.dataset.newsId = item.id;
             
-            const dateFormatted = formatDate(item.fecha || item.fecha_publicacion || item.date);
-            const tagText = item.etiqueta || item.tag || item.categoria || 'Nuevo';
+            const dateFormatted = formatDate(item.fecha);
+            const tagText = item.etiqueta || 'Nuevo';
+            const title = item.titulo || 'Sin título';
+            const imageUrl = item.imagen || '';
             
             card.innerHTML = `
                 <div class="news-banner-container loading">
                     <img 
-                        src="${item.imagen || item.image || item.banner || ''}" 
-                        alt="${item.titulo || item.title || 'Noticia'}" 
+                        src="${imageUrl}" 
+                        alt="${title}" 
                         class="news-banner"
                         onload="this.parentElement.classList.remove('loading')"
-                        onerror="handleImageError(this, '${item.titulo || item.title || 'Noticia'}')"
+                        onerror="handleImageError(this, '${title.replace(/'/g, "\\'")}')"
                         loading="lazy"
                     >
                 </div>
@@ -630,15 +663,16 @@
                         </svg>
                         ${dateFormatted}
                     </div>
-                    <h3 class="news-title">${item.titulo || item.title || 'Sin título'}</h3>
+                    <h3 class="news-title">${title}</h3>
                     ${tagText ? `<span class="news-tag">${tagText}</span>` : ''}
                 </div>
             `;
             
             // Prevenir comportamiento por defecto si no hay link
             card.addEventListener('click', function(e) {
-                if (!item.link && !item.url) {
+                if (!item.link || item.link === '#') {
                     e.preventDefault();
+                    console.log('Noticia sin link:', item.titulo);
                 }
             });
             
