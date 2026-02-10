@@ -8,6 +8,15 @@
     "tipo": "noticia",
     "etiqueta": "Convocatoria"
   },
+{
+  "titulo": "🎵 Nuevo video en TikTok",
+  "fecha": "2026-02-11T15:30:00",
+  "imagen": "https://ejemplo.com/tiktok.jpg",
+  "descripcion": "Mira nuestro último trend...",
+  "link": "https://tiktok.com/@estelarlatam",
+  "tipo": "redes",
+  "etiqueta": "TikTok"
+},  
   {
     "titulo": "📜 Reglas Oficiales de la Comunidad",
     "fecha": "2026-01-26T03:00:00",
