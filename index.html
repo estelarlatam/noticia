@@ -114,6 +114,86 @@
             font-weight: 600;
         }
 
+        /* Notification Permission Banner */
+        .notification-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .notification-banner.hidden {
+            display: none;
+        }
+
+        .notification-text {
+            font-size: 14px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .notification-btn {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .notification-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .notification-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        /* New Content Badge */
+        .new-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #ff4757;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+            animation: pulse 2s infinite;
+            z-index: 10;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
         /* Tabs */
         .tabs-container {
             background: white;
@@ -259,11 +339,11 @@
             transform: scale(0.98);
         }
 
-        /* CONTENEDOR DEL BANNER - RESPONSIVE */
+        /* CONTENEDOR DEL BANNER - SIN FONDO */
         .news-banner-container {
             width: 100%;
             position: relative;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: transparent; /* Sin fondo de color */
             aspect-ratio: 16 / 9;
             min-height: 180px;
             display: flex;
@@ -281,10 +361,11 @@
         .news-banner {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain; /* Mantiene la imagen original sin recortar */
             object-position: center;
             display: block;
             transition: transform 0.3s ease;
+            background: transparent;
         }
 
         .news-card:hover .news-banner {
@@ -387,6 +468,36 @@
         .news-card {
             -webkit-tap-highlight-color: transparent;
         }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #2d3436;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
@@ -400,6 +511,13 @@
             </button>
             <h1>Noticias</h1>
         </header>
+
+        <!-- Notification Permission Banner -->
+        <div id="notificationBanner" class="notification-banner hidden">
+            <span class="notification-text">🔔 ¿Quieres recibir notificaciones de nuevas noticias?</span>
+            <button class="notification-btn" onclick="requestNotificationPermission()">Activar</button>
+            <button class="notification-close" onclick="dismissNotificationBanner()">×</button>
+        </div>
 
         <!-- Loading State -->
         <div id="loadingState" class="loading-container">
@@ -462,8 +580,14 @@
         </div>
     </div>
 
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span class="toast-icon">🔔</span>
+        <span id="toastMessage">Nueva noticia disponible</span>
+    </div>
+
     <script>
-        // URL CORREGIDA del JSON de noticias (Raw de GitHub)
+        // URL del JSON de noticias
         const JSON_URL = 'https://raw.githubusercontent.com/estelarlatam/noticia/main/news-feed.json';
         
         // Variable global para almacenar noticias clasificadas
@@ -472,10 +596,15 @@
             updates: [],
             social: []
         };
+        
+        // Almacenar IDs de noticias ya vistas
+        let seenNewsIds = new Set();
+        
+        // Intervalo de verificación de nuevas noticias (cada 5 minutos)
+        let checkInterval = null;
 
         // Función para determinar el tipo de noticia
         function determineNewsType(item) {
-            // Si el campo tipo está presente, usarlo
             if (item.tipo) {
                 const tipo = item.tipo.toLowerCase().trim();
                 if (tipo === 'noticia' || tipo === 'news') return 'news';
@@ -483,16 +612,15 @@
                 if (tipo === 'redes' || tipo === 'social' || tipo === 'redes sociales') return 'social';
             }
 
-            // Si no hay tipo, intentar determinar por título o contenido
             const title = (item.titulo || '').toLowerCase();
-            if (title.includes('update') || title.includes('actualización') || title.includes('parche') || title.includes('versión') || title.includes('v1.') || title.includes('v2.')) {
+            if (title.includes('update') || title.includes('actualización') || title.includes('parche') || title.includes('versión')) {
                 return 'updates';
             }
-            if (title.includes('instagram') || title.includes('tiktok') || title.includes('twitter') || title.includes('facebook') || title.includes('youtube') || title.includes('social')) {
+            if (title.includes('instagram') || title.includes('tiktok') || title.includes('twitter') || title.includes('facebook') || title.includes('youtube')) {
                 return 'social';
             }
             
-            return 'news'; // Por defecto
+            return 'news';
         }
 
         // Función para formatear fecha
@@ -503,7 +631,6 @@
                 const date = new Date(dateString);
                 const now = new Date();
                 
-                // Verificar si la fecha es válida
                 if (isNaN(date.getTime())) {
                     return 'Fecha no disponible';
                 }
@@ -533,28 +660,39 @@
                     });
                 }
             } catch (e) {
-                console.error('Error formateando fecha:', dateString, e);
                 return 'Fecha no disponible';
             }
         }
 
-        // Normalizar ID (crear slug único)
+        // Normalizar ID
         function normalizeId(title) {
             if (!title) return 'sin-id-' + Date.now();
             return title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]/g, '').substring(0, 50);
         }
 
+        // Verificar si una noticia es nueva (menos de 24 horas)
+        function isNewNews(dateString) {
+            if (!dateString) return false;
+            try {
+                const date = new Date(dateString);
+                const now = new Date();
+                const diffHours = (now - date) / (1000 * 60 * 60);
+                return diffHours < 24; // Considera "nueva" si tiene menos de 24 horas
+            } catch (e) {
+                return false;
+            }
+        }
+
         // Función para cargar noticias desde JSON
-        async function loadNews() {
-            // Mostrar loading
-            document.getElementById('loadingState').style.display = 'flex';
-            document.getElementById('errorState').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'none';
+        async function loadNews(showNotifications = false) {
+            if (!showNotifications) {
+                document.getElementById('loadingState').style.display = 'flex';
+                document.getElementById('errorState').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'none';
+            }
 
             try {
-                // Agregar timestamp para evitar caché
                 const url = `${JSON_URL}?t=${Date.now()}`;
-                
                 console.log('Cargando noticias desde:', url);
                 
                 const response = await fetch(url);
@@ -564,13 +702,42 @@
                 }
                 
                 const items = await response.json();
-                
                 console.log('Datos recibidos:', items);
                 
-                // Validar que sea un array
                 if (!Array.isArray(items)) {
                     throw new Error('El JSON no contiene un array de noticias');
                 }
+
+                // Detectar nuevas noticias si no es la primera carga
+                if (showNotifications && seenNewsIds.size > 0) {
+                    const newItems = items.filter(item => {
+                        const id = normalizeId(item.titulo);
+                        return !seenNewsIds.has(id);
+                    });
+                    
+                    if (newItems.length > 0) {
+                        // Mostrar notificación
+                        showToast(`📰 ${newItems.length} nueva${newItems.length > 1 ? 's' : ''} noticia${newItems.length > 1 ? 's' : ''} disponible${newItems.length > 1 ? 's' : ''}`);
+                        
+                        // Enviar notificación push si está permitido
+                        if (Notification.permission === 'granted') {
+                            newItems.forEach(item => {
+                                new Notification('📰 Estelar Latam - Nueva Noticia', {
+                                    body: item.titulo,
+                                    icon: item.imagen || 'https://estelarlatam.github.io/website/favicon.ico',
+                                    badge: 'https://estelarlatam.github.io/website/favicon.ico',
+                                    tag: normalizeId(item.titulo),
+                                    requireInteraction: false
+                                });
+                            });
+                        }
+                    }
+                }
+
+                // Guardar IDs de noticias vistas
+                items.forEach(item => {
+                    seenNewsIds.add(normalizeId(item.titulo));
+                });
 
                 // Clasificar noticias
                 classifyNews(items);
@@ -578,26 +745,22 @@
                 // Renderizar noticias
                 renderAllNews();
                 
-                // Mostrar contenido principal
-                document.getElementById('loadingState').style.display = 'none';
-                document.getElementById('mainContent').style.display = 'block';
+                if (!showNotifications) {
+                    document.getElementById('loadingState').style.display = 'none';
+                    document.getElementById('mainContent').style.display = 'block';
+                }
                 
             } catch (error) {
                 console.error('Error cargando noticias:', error);
-                document.getElementById('loadingState').style.display = 'none';
-                document.getElementById('errorState').style.display = 'block';
-                
-                // Mostrar mensaje de error más específico
-                const errorContainer = document.querySelector('#errorState p');
-                if (errorContainer) {
-                    errorContainer.textContent = `Error: ${error.message}. Verifica que el archivo JSON sea accesible públicamente.`;
+                if (!showNotifications) {
+                    document.getElementById('loadingState').style.display = 'none';
+                    document.getElementById('errorState').style.display = 'block';
                 }
             }
         }
 
         // Función para clasificar noticias
         function classifyNews(items) {
-            // Limpiar datos anteriores
             newsData = {
                 news: [],
                 updates: [],
@@ -605,7 +768,6 @@
             };
 
             items.forEach((item, index) => {
-                // Validar que el item tenga los campos mínimos
                 if (!item || typeof item !== 'object') {
                     console.warn('Item inválido en posición', index, item);
                     return;
@@ -613,10 +775,12 @@
                 
                 const type = determineNewsType(item);
                 
-                // Agregar ID único si no tiene
                 if (!item.id) {
                     item.id = normalizeId(item.titulo) || `news-${index}-${Date.now()}`;
                 }
+                
+                // Agregar flag de "nueva" si tiene menos de 24 horas
+                item.isNew = isNewNews(item.fecha);
                 
                 newsData[type].push(item);
             });
@@ -642,8 +806,12 @@
             const title = item.titulo || 'Sin título';
             const imageUrl = item.imagen || '';
             
+            // Badge "NUEVO" si es noticia reciente
+            const newBadge = item.isNew ? '<span class="new-badge">Nuevo</span>' : '';
+            
             card.innerHTML = `
                 <div class="news-banner-container loading">
+                    ${newBadge}
                     <img 
                         src="${imageUrl}" 
                         alt="${title}" 
@@ -668,11 +836,9 @@
                 </div>
             `;
             
-            // Prevenir comportamiento por defecto si no hay link
             card.addEventListener('click', function(e) {
                 if (!item.link || item.link === '#') {
                     e.preventDefault();
-                    console.log('Noticia sin link:', item.titulo);
                 }
             });
             
@@ -681,7 +847,6 @@
 
         // Función para renderizar todas las noticias
         function renderAllNews() {
-            // Limpiar contenedores
             document.getElementById('newsContainer').innerHTML = '';
             document.getElementById('updatesContainer').innerHTML = '';
             document.getElementById('socialContainer').innerHTML = '';
@@ -733,6 +898,59 @@
             `;
         }
 
+        // Sistema de notificaciones
+        function initNotifications() {
+            // Verificar si el navegador soporta notificaciones
+            if (!('Notification' in window)) {
+                console.log('Este navegador no soporta notificaciones');
+                return;
+            }
+            
+            // Mostrar banner si no se ha decidido aún
+            if (Notification.permission === 'default') {
+                document.getElementById('notificationBanner').classList.remove('hidden');
+            }
+            
+            // Iniciar verificación periódica de nuevas noticias
+            checkInterval = setInterval(() => {
+                loadNews(true);
+            }, 300000); // Cada 5 minutos
+        }
+
+        function requestNotificationPermission() {
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    showToast('🔔 Notificaciones activadas');
+                    dismissNotificationBanner();
+                    
+                    // Enviar notificación de prueba
+                    new Notification('📰 Estelar Latam', {
+                        body: 'Recibirás notificaciones cuando haya nuevas noticias',
+                        icon: 'https://estelarlatam.github.io/website/favicon.ico'
+                    });
+                } else {
+                    showToast('❌ Notificaciones desactivadas');
+                    dismissNotificationBanner();
+                }
+            });
+        }
+
+        function dismissNotificationBanner() {
+            document.getElementById('notificationBanner').classList.add('hidden');
+        }
+
+        // Toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
         // Tab Switching
         function switchTab(tabName, element) {
             document.querySelectorAll('.tab').forEach(tab => {
@@ -749,13 +967,13 @@
         // Cargar noticias al iniciar
         document.addEventListener('DOMContentLoaded', function() {
             loadNews();
+            initNotifications();
         });
 
-        // Recargar al volver a la página
-        document.addEventListener('visibilitychange', function() {
-            if (document.visibilityState === 'visible') {
-                // Opcional: recargar automáticamente al volver
-                // loadNews();
+        // Limpiar intervalo al cerrar
+        window.addEventListener('beforeunload', () => {
+            if (checkInterval) {
+                clearInterval(checkInterval);
             }
         });
 
