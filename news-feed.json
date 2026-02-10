@@ -1,19 +1,29 @@
 [
   {
-  "fecha": "2026-02-10T10:00:00",
-  "imagen": "https://ejemplo.com/update.jpg",
-  "descripcion": "Hemos renovado completamente el diseño...",
-  "link": "https://estelarlatam.github.io/",
-  "tipo": "actualizacion",
-  "etiqueta": "Update v2.0"
- },
+    "titulo": "🚀 Nueva Versión 2.0 del Sitio Web",
+    "fecha": "2026-02-10T10:00:00",
+    "imagen": "https://estelarlatam.github.io/noticia/imagenes/update-v2.jpg",
+    "descripcion": "Hemos renovado completamente el diseño de nuestra plataforma con nuevas funciones, mejor rendimiento y una experiencia más fluida. ¡Descubre todas las novedades!",
+    "link": "https://estelarlatam.github.io/noticia/pagina/update-v2/",
+    "tipo": "actualizacion",
+    "etiqueta": "Update v2.0"
+  },
   {
-    "titulo": "🎉 ¡Bienvenid@ a nuestro Centro de Noticias!",
-    "fecha": "2026-01-25T13:00:00",
-    "imagen": "https://estelarlatam.github.io/noticia/imagenes/banner-de-presentacion.jpg",
-    "descripcion": "Aquí encontrarás todas las novedades, eventos, actualizaciones, campañas especiales y noticias semanales de nuestra plataforma. 🔔 ¡No olvides visitarnos cada semana para enterarte de lo último!",
-    "link": "https://estelarlatam.github.io/website/",
-    "tipo": "noticia",
-    "etiqueta": "Anuncio"
+    "titulo": "⚡ Mejoras de Rendimiento y Velocidad",
+    "fecha": "2026-02-05T15:30:00",
+    "imagen": "https://estelarlatam.github.io/noticia/imagenes/performance-update.jpg",
+    "descripcion": "Optimizamos el backend para reducir los tiempos de carga en un 50%. Navega más rápido y sin interrupciones.",
+    "link": "https://estelarlatam.github.io/noticia/pagina/mejoras-rendimiento/",
+    "tipo": "actualizacion",
+    "etiqueta": "Mejora"
+  },
+  {
+    "titulo": "🔧 Parche de Corrección de Errores",
+    "fecha": "2026-02-01T09:00:00",
+    "imagen": "https://estelarlatam.github.io/noticia/imagenes/patch-notes.jpg",
+    "descripcion": "Se corrigieron errores reportados por la comunidad, incluyendo problemas de inicio de sesión y visualización en móviles.",
+    "link": "https://estelarlatam.github.io/noticia/pagina/patch-notes/",
+    "tipo": "actualizacion",
+    "etiqueta": "Parche"
   }
 ]
