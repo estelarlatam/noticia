@@ -5,7 +5,7 @@
     "imagen": "https://estelarlatam.github.io/noticia/imagenes/update-v2.jpg",
     "descripcion": "Hemos renovado completamente el diseño de nuestra plataforma con nuevas funciones, mejor rendimiento y una experiencia más fluida. ¡Descubre todas las novedades!",
     "link": "https://estelarlatam.github.io/noticia/pagina/update-v1/",
-    "tipo": "noticia",
+    "tipo": "actualizacion",
     "etiqueta": "Update v1.0"
   },
   {
@@ -14,7 +14,7 @@
     "imagen": "https://i.ibb.co/gLsDYrJD/REGLAS.png",
     "descripcion": "Para mantener la armonía y el respeto entre tod@s, te presentamos nuestras normas oficiales. 💫 ¡Por favor, léelas con atención antes de participar en eventos, chats o transmisiones!",
     "link": "https://estelarlatam.github.io/pautas-de-la-comunidad/",
-    "tipo": "actualizacion",
+    "tipo": "noticia",
     "etiqueta": "Pautas Comunitarias"
   },  
   {
